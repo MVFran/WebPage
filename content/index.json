@@ -1,0 +1,47 @@
+{
+  "projects": [
+    {
+      "id": "proyecto-ejemplo",
+      "title": "Nombre del proyecto",
+      "description": "Descripción breve del proyecto. Qué problema resuelve y qué tecnologías usa.",
+      "date": "2025-05-01",
+      "tags": ["Python", "ML"],
+      "type": "programming",
+      "file": "content/projects/proyecto-ejemplo.md"
+    }
+  ],
+
+  "blog": [
+    {
+      "id": "articulo-ejemplo",
+      "title": "Título del artículo",
+      "description": "Un párrafo corto que resume de qué va el artículo.",
+      "date": "2025-05-12",
+      "tags": ["Física"],
+      "readingTime": 5,
+      "file": "content/blog/articulo-ejemplo.md"
+    }
+  ],
+
+  "courses": [
+    {
+      "id": "curso-ejemplo",
+      "title": "Nombre del curso",
+      "institution": "Nombre de la institución o plataforma",
+      "date": "2025-04-01",
+      "tags": ["Matemáticas"],
+      "notes": [
+        {
+          "title": "Módulo 1 — Introducción",
+          "type": "markdown",
+          "file": "content/courses/curso-ejemplo/modulo-1.md"
+        },
+        {
+          "title": "Módulo 2 — Desarrollo",
+          "type": "pdf",
+          "file": "content/courses/curso-ejemplo/modulo-2.pdf"
+        }
+      ]
+    }
+  ]
+}
