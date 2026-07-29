@@ -69,7 +69,8 @@ function setupLinkInterception() {
 function isInternalLink(link) {
   return (
     link.hostname === window.location.hostname &&
-    !link.hasAttribute('target')
+    !link.hasAttribute('target') &&
+    !link.hasAttribute('download')
   );
 }
 
