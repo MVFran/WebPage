@@ -211,12 +211,12 @@ async function renderHome() {
         </div>
         <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl);
                    font-weight: 500; line-height: 1.25; margin-bottom: var(--space-5);">
-          Hola, soy <span class="text-accent">Tu Nombre</span>
+          Hola, soy <span class="text-accent">Francisco Miranda</span>
         </h1>
         <p style="font-family: var(--font-serif); font-size: var(--text-lg);
                   line-height: var(--leading-loose); color: var(--color-text-secondary);
                   max-width: 560px; margin-bottom: var(--space-8);">
-          Investigo X y desarrollo software Y. Aquí publico mis proyectos,
+          Soy Físico y Analista de Datos. Aquí publico mis proyectos,
           notas de cursos y artículos sobre temas que me interesan.
         </p>
         <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
