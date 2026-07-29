@@ -1,0 +1,844 @@
+/* ============================================================
+   SISTEMA DE DISEÑO — MI SITIO PERSONAL
+   Paleta: Verde musgo | Tipografía: Lora + Inter
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. IMPORTACIÓN DE FUENTES
+   Se cargan desde Google Fonts. Lora para cuerpo editorial,
+   Inter para UI, código y etiquetas.
+   ------------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap');
+
+/* ------------------------------------------------------------
+   2. VARIABLES DEL SISTEMA DE DISEÑO (MODO CLARO)
+   Todas las decisiones de color y tipografía viven aquí.
+   Cambiar un valor aquí lo propaga a todo el sitio.
+   ------------------------------------------------------------ */
+:root {
+  /* --- Tipografía --- */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  /* Escala tipográfica — basada en proporción 1.25 (Major Third) */
+  --text-xs:   0.75rem;   /* 12px — etiquetas pequeñas        */
+  --text-sm:   0.875rem;  /* 14px — metadata, notas al pie    */
+  --text-base: 1rem;      /* 16px — cuerpo de texto           */
+  --text-lg:   1.125rem;  /* 18px — subtítulos                */
+  --text-xl:   1.375rem;  /* 22px — h3                        */
+  --text-2xl:  1.75rem;   /* 28px — h2                        */
+  --text-3xl:  2.25rem;   /* 36px — h1                        */
+
+  /* Interlineado */
+  --leading-tight:  1.25;
+  --leading-normal: 1.6;
+  --leading-loose:  1.8;   /* Para párrafos largos de lectura */
+
+  /* --- Colores base (modo claro) --- */
+  /* Fondos: ligeramente cálidos, nunca blanco puro */
+  --color-bg:          #F8F7F4;   /* Fondo principal de página        */
+  --color-bg-surface:  #F2F0EC;   /* Cards, sidebar, elementos elevados */
+  --color-bg-subtle:   #ECEAE4;   /* Código inline, badges            */
+
+  /* Texto: gris muy oscuro, nunca negro puro */
+  --color-text-primary:   #1A1917;  /* Cuerpo principal                */
+  --color-text-secondary: #4A4845;  /* Metadata, subtítulos            */
+  --color-text-muted:     #7A7875;  /* Notas al pie, marcas de tiempo  */
+
+  /* Acento: verde musgo — el único color cromático del sitio */
+  --color-accent:         #2D6A4F;  /* Acento principal, links activos */
+  --color-accent-hover:   #1B4D37;  /* Hover de links y botones        */
+  --color-accent-subtle:  #D8F0E5;  /* Fondo de tags, badges verdes    */
+  --color-accent-text:    #1A4A34;  /* Texto sobre fondo accent-subtle */
+
+  /* Bordes */
+  --color-border:        rgba(26, 25, 23, 0.12);  /* Bordes normales   */
+  --color-border-strong: rgba(26, 25, 23, 0.25);  /* Bordes enfatizados */
+
+  /* --- Espaciado --- */
+  /* Sistema de 8 puntos: todos los espacios son múltiplos de 8px */
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+
+  /* --- Layout --- */
+  --max-width-content: 680px;   /* Ancho máximo del texto de artículos  */
+  --max-width-wide:    1100px;  /* Ancho máximo del layout general      */
+  --sidebar-width:     240px;   /* Ancho del sidebar de navegación      */
+
+  /* --- Bordes redondeados --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 100px;
+
+  /* --- Transiciones --- */
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   400ms ease;
+}
+
+/* ------------------------------------------------------------
+   3. VARIABLES EN MODO OSCURO
+   Se activan automáticamente según la preferencia del sistema,
+   o manualmente cuando el usuario agrega la clase .dark al <html>.
+   Solo se redefinen los valores que cambian — el resto hereda.
+   ------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+  :root { --is-dark: 1; }
+}
+
+:root.dark, [data-theme="dark"] {
+  /* Fondos: grises muy oscuros con leve tinte cálido */
+  --color-bg:          #141412;
+  --color-bg-surface:  #1C1B18;
+  --color-bg-subtle:   #242320;
+
+  /* Texto */
+  --color-text-primary:   #E8E6E0;
+  --color-text-secondary: #A8A5A0;
+  --color-text-muted:     #6A6865;
+
+  /* Acento: verde más claro para mantener contraste en fondo oscuro */
+  --color-accent:         #52B788;
+  --color-accent-hover:   #74C69D;
+  --color-accent-subtle:  #1A3D2B;
+  --color-accent-text:    #7EE8B2;
+
+  /* Bordes */
+  --color-border:        rgba(232, 230, 224, 0.10);
+  --color-border-strong: rgba(232, 230, 224, 0.22);
+}
+
+/* Activar dark mode si el sistema lo prefiere Y no se forzó el modo claro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg:          #141412;
+    --color-bg-surface:  #1C1B18;
+    --color-bg-subtle:   #242320;
+    --color-text-primary:   #E8E6E0;
+    --color-text-secondary: #A8A5A0;
+    --color-text-muted:     #6A6865;
+    --color-accent:         #52B788;
+    --color-accent-hover:   #74C69D;
+    --color-accent-subtle:  #1A3D2B;
+    --color-accent-text:    #7EE8B2;
+    --color-border:        rgba(232, 230, 224, 0.10);
+    --color-border-strong: rgba(232, 230, 224, 0.22);
+  }
+}
+
+/* ------------------------------------------------------------
+   4. RESET Y BASE
+   Normalización mínima — solo lo necesario.
+   ------------------------------------------------------------ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  /* La transición en html permite el cambio suave de tema */
+  transition: background-color var(--transition-normal),
+              color var(--transition-normal);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* ------------------------------------------------------------
+   5. TIPOGRAFÍA — ELEMENTOS EDITORIALES
+   Las etiquetas h1-h4, p, blockquote dentro de .content
+   usan Lora. El resto del sitio (nav, sidebar, botones) usa Inter.
+   ------------------------------------------------------------ */
+
+/* Dentro de .content, todo es editorial (Lora) */
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content p,
+.content blockquote,
+.content li {
+  font-family: var(--font-serif);
+}
+
+.content h1 {
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.01em;
+}
+
+.content h2 {
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-4);
+}
+
+.content h3 {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+}
+
+.content p {
+  font-size: var(--text-base);
+  line-height: var(--leading-loose);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-5);
+}
+
+.content blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-3) var(--space-6);
+  margin: var(--space-8) 0;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.content code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-bg-subtle);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.content pre {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  overflow-x: auto;
+  margin: var(--space-6) 0;
+}
+
+.content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.content ul,
+.content ol {
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+.content li {
+  line-height: var(--leading-loose);
+  margin-bottom: var(--space-2);
+}
+
+.content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-12) 0;
+}
+
+/* ------------------------------------------------------------
+   6. LAYOUT PRINCIPAL
+   Estructura de dos columnas: sidebar fijo a la izquierda,
+   contenido principal a la derecha.
+   En móvil colapsa a una sola columna.
+   ------------------------------------------------------------ */
+.site-wrapper {
+  display: flex;
+  min-height: 100vh;
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+}
+
+/* Sidebar de navegación */
+.site-nav {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  padding: var(--space-12) var(--space-8);
+  border-right: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Área de contenido principal */
+.site-main {
+  flex: 1;
+  min-width: 0; /* Evita que el flex desborde */
+  padding: var(--space-12) var(--space-10);
+}
+
+/* Centra el texto en artículos largos */
+.content-wrapper {
+  max-width: var(--max-width-content);
+}
+
+/* ------------------------------------------------------------
+   7. NAVEGACIÓN
+   ------------------------------------------------------------ */
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  display: block;
+}
+
+.nav-logo:hover {
+  color: var(--color-text-primary);
+}
+
+.nav-logo span {
+  display: block;
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  color: var(--color-text-secondary);
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.nav-links a:hover {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+}
+
+.nav-links a.active {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+  font-weight: 500;
+}
+
+/* Botón de toggle de tema en el nav */
+.theme-toggle {
+  margin-top: auto; /* Empuja el botón al fondo del sidebar */
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  transition: border-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+/* ------------------------------------------------------------
+   8. COMPONENTES REUTILIZABLES
+   ------------------------------------------------------------ */
+
+/* --- Tags / etiquetas --- */
+.tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* --- Metadata de artículos (fecha, tiempo de lectura) --- */
+.meta {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.meta-separator::before {
+  content: '·';
+}
+
+/* --- Cards de proyectos y artículos --- */
+.card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: border-color var(--transition-fast),
+              transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px);
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-tight);
+}
+
+.card-description {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin-bottom: var(--space-4);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* --- Grid de cards --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+/* --- Botones --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  color: #fff;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.btn-ghost:hover {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+/* --- Divisor de sección --- */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.section-link {
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  color: var(--color-accent);
+}
+
+/* --- Badge de tipo de contenido --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  background: var(--color-bg-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* ------------------------------------------------------------
+   9. RESPONSIVIDAD — MOBILE FIRST
+   El sitio funciona en una sola columna en pantallas pequeñas.
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .site-wrapper {
+    flex-direction: column;
+  }
+
+  .site-nav {
+    width: 100%;
+    height: auto;
+    position: static;
+    padding: var(--space-5) var(--space-6);
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .nav-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .theme-toggle {
+    margin-top: 0;
+    width: auto;
+  }
+
+  .site-main {
+    padding: var(--space-8) var(--space-5);
+  }
+
+  .content h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .content h2 {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ------------------------------------------------------------
+   10. UTILIDADES
+   Clases de ayuda para casos puntuales.
+   ------------------------------------------------------------ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-muted   { color: var(--color-text-muted); }
+.text-accent  { color: var(--color-accent); }
+.font-serif   { font-family: var(--font-serif); }
+.font-sans    { font-family: var(--font-sans); }
+.mt-auto      { margin-top: auto; }
+
+
+/* ------------------------------------------------------------
+   11. COMPONENTES ADICIONALES
+   ------------------------------------------------------------ */
+
+/* --- Chip de filtros (página de proyectos) --- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.chip:hover {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+.chip.active {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+  border-color: transparent;
+  font-weight: 500;
+}
+
+/* --- Input de búsqueda — estado focus --- */
+#search-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+
+/* ------------------------------------------------------------
+   12. IMÁGENES DENTRO DEL CONTENIDO
+   ------------------------------------------------------------ */
+
+/* Imágenes responsivas dentro de artículos, proyectos y about */
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin: var(--space-6) 0;
+  display: block;
+}
+
+/* Pie de foto automático — el <em> inmediatamente después
+   de una imagen se convierte en caption.
+   En Markdown: escribir texto en itálicas bajo la imagen. */
+.content img + em {
+  display: block;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: normal;
+  margin-top: calc(var(--space-6) * -1);
+  margin-bottom: var(--space-6);
+}
+
+
+
+/* ------------------------------------------------------------
+   13. FOOTER
+   ------------------------------------------------------------ */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-12) var(--space-10) var(--space-8);
+  margin-top: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  text-align: center;
+}
+
+/* Nombre y descripción */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.footer-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.footer-tagline {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  max-width: 360px;
+  line-height: var(--leading-normal);
+}
+
+/* Divisor decorativo con acento */
+.footer-divider {
+  width: 40px;
+  height: 2px;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* Tres columnas de enlaces */
+.footer-cols {
+  display: flex;
+  gap: var(--space-16);
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: left;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 120px;
+}
+
+.footer-col-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.footer-col-links a {
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: color var(--transition-fast);
+}
+
+.footer-col-links a:hover {
+  color: var(--color-accent);
+}
+
+.footer-col-links svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* Línea inferior — copyright y crédito */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.footer-copyright,
+.footer-made {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: var(--space-10) var(--space-5) var(--space-6);
+    gap: var(--space-6);
+  }
+
+  .footer-cols {
+    flex-direction: column;
+    gap: var(--space-8);
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-col {
+    align-items: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

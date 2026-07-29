@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- =====================================================
+       SEO y metadatos básicos
+       Cambia estos valores con tu información real.
+       ===================================================== -->
+  <title>Tu Nombre — Investigador y Desarrollador</title>
+  <meta name="description" content="Proyectos de programación, investigación y notas académicas." />
+  <meta name="author" content="Tu Nombre" />
+
+  <!-- Open Graph — controla cómo se ve el link al compartirlo -->
+  <meta property="og:title" content="Tu Nombre" />
+  <meta property="og:description" content="Proyectos de programación, investigación y notas académicas." />
+  <meta property="og:type" content="website" />
+
+  <!-- =====================================================
+       Estilos
+       ===================================================== -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+
+  <!-- =====================================================
+       Favicon
+       ===================================================== -->
+  <link rel="icon" href="public/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+
+  <div class="site-wrapper">
+
+    <!-- =========================================================
+         SIDEBAR — NAVEGACIÓN
+         ========================================================= -->
+    <nav class="site-nav" aria-label="Navegación principal">
+
+      <a href="/" class="nav-logo" id="nav-logo">
+        Tu Nombre
+        <span>Investigador · Desarrollador</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="/" data-route="home">Inicio</a></li>
+        <li><a href="/proyectos" data-route="projects">Proyectos</a></li>
+        <li><a href="/articulos" data-route="blog">Artículos</a></li>
+        <li><a href="/cursos" data-route="courses">Cursos</a></li>
+        <li><a href="/sobre-mi" data-route="about">Sobre mí</a></li>
+      </ul>
+
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Cambiar tema"
+        title="Cambiar entre modo claro y oscuro"
+      >
+        <span id="theme-icon" aria-hidden="true">🌙</span>
+        <span id="theme-label">Modo oscuro</span>
+      </button>
+
+    </nav>
+
+
+    <!-- =========================================================
+         CONTENIDO PRINCIPAL
+         El router reemplaza todo lo que haya aquí al navegar.
+         aria-live="polite" le indica a los lectores de pantalla
+         que este contenido cambia dinámicamente.
+         ========================================================= -->
+    <main class="site-main" id="app" aria-live="polite">
+      <!-- El router inyecta aquí el contenido de cada página -->
+    </main>
+
+  </div>
+
+
+  <!-- ===========================================================
+       JAVASCRIPT
+       type="module" activa los módulos ES (import/export).
+       El script se carga al final del body para no bloquear
+       la renderización del HTML visible (nav, estructura).
+       =========================================================== -->
+  <script type="module" src="src/app.js"></script>
+
+</body>
+</html>

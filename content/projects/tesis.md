@@ -1,0 +1,1 @@
+# Generación de potenciales de interacción por medio de inteligencia artificial

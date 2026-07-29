@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tu Nombre — Investigador y Desarrollador</title>
+  <meta name="description" content="Proyectos de programación, investigación y notas académicas." />
+  <meta name="author" content="Tu Nombre" />
+
+  <meta property="og:title" content="Tu Nombre" />
+  <meta property="og:description" content="Proyectos de programación, investigación y notas académicas." />
+  <meta property="og:type" content="website" />
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="icon" href="public/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+
+  <div class="site-wrapper">
+
+    <nav class="site-nav" aria-label="Navegación principal">
+
+      <a href="/" class="nav-logo" id="nav-logo">
+        Tu Nombre
+        <span>Investigador · Desarrollador</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="/" data-route="home">Inicio</a></li>
+        <li><a href="/proyectos" data-route="projects">Proyectos</a></li>
+        <li><a href="/articulos" data-route="blog">Artículos</a></li>
+        <li><a href="/cursos" data-route="courses">Cursos</a></li>
+        <li><a href="/sobre-mi" data-route="about">Sobre mí</a></li>
+      </ul>
+
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Cambiar tema"
+        title="Cambiar entre modo claro y oscuro"
+      >
+        <span id="theme-icon" aria-hidden="true">🌙</span>
+        <span id="theme-label">Modo oscuro</span>
+      </button>
+
+    </nav>
+
+    <main class="site-main" id="app" aria-live="polite">
+      <!-- El router inyecta aquí el contenido de cada página -->
+    </main>
+
+  </div>
+
+  <!-- =====================================================
+       marked.js — convierte Markdown a HTML
+       Se carga ANTES de app.js para que content-loader.js
+       pueda usar marked.parse() como variable global.
+       ===================================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Módulo principal — importa y arranca todo el sitio -->
+  <script type="module" src="src/app.js"></script>
+
+</body>
+</html>
