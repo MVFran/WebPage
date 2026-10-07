@@ -6,14 +6,17 @@ Actualmente estoy haciendo mi Tesis de titulación en el Instituto de Física de
 
 ## Trayectoria académica
 
-**Licenciatura en Física** — Universidad Nacional Autónoma de México
+**Licenciatura en Física**  
+Universidad Nacional Autónoma de México $\cdot$ *2020 – 2025*
 
 
 ## Experiencia profesional
 
-**Analista de Datos** — EPA Digital
+**Analista de Datos**  
+EPA Digital $\cdot$ *Enero 2026 – Actual*
 
-**Ayudante de Investigador** — Instituto de Física
+**Ayudante de Investigador**  
+Instituto de Física $\cdot$ *Enero 2025 – Enero 2026*
 
 ## Habilidades
 

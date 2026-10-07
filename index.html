@@ -4,160 +4,116 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Francisco Miranda</title>
+  <title>Francisco Miranda · Físico y Analista de Datos</title>
   <meta name="description" content="Proyectos de programación, investigación y notas académicas." />
   <meta name="author" content="Francisco Miranda" />
+  <meta name="color-scheme" content="light dark" />
 
   <meta property="og:title" content="Francisco Miranda" />
   <meta property="og:description" content="Proyectos de programación, investigación y notas académicas." />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_MX" />
+  <meta name="twitter:card" content="summary" />
 
-  <link rel="stylesheet" href="assets/css/main.css" />
-  <link rel="icon" href="public/favicon.ico" type="image/x-icon" />
+  <!-- Aplica el tema antes de pintar para evitar el parpadeo claro → oscuro -->
+  <script>
+    try {
+      var t = localStorage.getItem('theme');
+      if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css"
+        integrity="sha384-3rdsX6e5mueWyoweR9NIVmtEsUkokpBT/0ALqKKIBMr9j4qhHkaIkAcGgsE6uVlp" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+  <link rel="sitemap" href="/sitemap.xml" />
 </head>
 
 <body>
+  <a class="skip-link" href="#app">Saltar al contenido</a>
 
-  <div class="site-wrapper">
+  <header class="site-header">
+    <div class="header-inner">
 
-    <nav class="site-nav" aria-label="Navegación principal">
-
-      <a href="/" class="nav-logo" id="nav-logo">
-        Francisco Miranda
-        <span>Físico · Analista de Datos</span>
+      <a href="/" class="brand" aria-label="Francisco Miranda — Inicio">
+        <span class="brand-mark" aria-hidden="true">FM</span>
+        <span class="brand-text">
+          <span class="brand-name">Francisco Miranda</span>
+          <span class="brand-role">Físico · Analista de Datos</span>
+        </span>
       </a>
 
-      <ul class="nav-links" role="list">
-        <li><a href="/" data-route="home">Inicio</a></li>
-        <li><a href="/proyectos" data-route="projects">Proyectos</a></li>
-        <li><a href="/articulos" data-route="blog">Artículos</a></li>
-        <li><a href="/cursos" data-route="courses">Cursos</a></li>
-        <li><a href="/sobre-mi" data-route="about">Sobre mí</a></li>
-      </ul>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul role="list">
+          <li><a href="/" data-route="/">Inicio</a></li>
+          <li><a href="/proyectos" data-route="/proyectos">Proyectos</a></li>
+          <li><a href="/articulos" data-route="/articulos">Artículos</a></li>
+          <li><a href="/cursos" data-route="/cursos">Cursos</a></li>
+          <li><a href="/sobre-mi" data-route="/sobre-mi">Sobre mí</a></li>
+        </ul>
+      </nav>
 
-      <button
-        class="theme-toggle"
-        id="theme-toggle"
-        aria-label="Cambiar tema"
-        title="Cambiar entre modo claro y oscuro"
-      >
-        <span id="theme-icon" aria-hidden="true">🌙</span>
-        <span id="theme-label">Modo oscuro</span>
-      </button>
-
-    </nav>
-
-    <!-- Columna derecha: contenido + footer -->
-    <div style="display: flex; flex-direction: column; flex: 1; min-width: 0;">
-
-      <main class="site-main" id="app" aria-live="polite">
-        <!-- El router inyecta aquí el contenido de cada página -->
-      </main>
-
-      <!-- =====================================================
-           FOOTER
-           ===================================================== -->
-      <footer class="site-footer">
-
-        <!-- Nombre y descripción -->
-        <div class="footer-brand">
-         <!-- <span class="footer-name">Francisco Miranda</span>
-          <p class="footer-tagline">
-            Físico · Analista de Datos<br> -->
-            Ciudad de México, México.
-          </p>
-        </div>
-
-        <!-- Divisor -->
-        <div class="footer-divider"></div>
-
-        <!-- Tres columnas: navegación, contacto, redes -->
-        <div class="footer-cols">
-
-          <!-- Columna 1: enlaces del sitio -->
-          <div class="footer-col">
-            <h3 class="footer-col-title">Sitio</h3>
-            <ul class="footer-col-links">
-              <li><a href="/">Inicio</a></li>
-              <li><a href="/proyectos">Proyectos</a></li>
-              <li><a href="/articulos">Artículos</a></li>
-              <li><a href="/cursos">Cursos</a></li>
-              <li><a href="/sobre-mi">Sobre mí</a></li>
-            </ul>
-          </div>
-
-          <!-- Columna 2: contacto -->
-          <div class="footer-col">
-            <h3 class="footer-col-title">Contacto</h3>
-            <ul class="footer-col-links">
-              <li>
-                <a href="mailto:francisco.miv4@gmail.com">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                  francisco.miv4@gmail.com
-                </a>
-              </li>
-              <li>
-                <a href="public/cv.pdf" download>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM12 17l-4-4h2.5v-3h3v3H16l-4 4z"/></svg>
-                  CV
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Columna 3: redes sociales -->
-          <div class="footer-col">
-            <h3 class="footer-col-title">Redes</h3>
-            <ul class="footer-col-links">
-              <li>
-                <a href="https://github.com/MVFran" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/francisco-miranda-vazquez" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a href="https://www.instagram.com/francisco_miv" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                  Instagram
-                </a>
-              </li>
-            </ul>
-          </div>
-
-        </div>
-
-        <!-- Divisor -->
-        <div class="footer-divider"></div>
-
-        <!-- Copyright -->
-        <div class="footer-bottom">
-          <p class="footer-copyright">
-            © <span id="footer-year"></span> Francisco Miranda. All rights reserved.
-          </p>
-          <p class="footer-made">
-            Hecho con HTML, CSS y JavaScript
-          </p>
-        </div>
-
-      </footer>
+      <div class="header-actions">
+        <button class="icon-btn search-trigger" id="search-open" type="button" aria-label="Buscar (Ctrl K)" title="Buscar  ·  Ctrl K">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg>
+          <kbd aria-hidden="true">Ctrl K</kbd>
+        </button>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro" title="Cambiar tema">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM1 11h3v2H1v-2zm19 0h3v2h-3v-2zM4.2 5.6l1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1zm12.1 12.1l1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1zM5.6 19.8l-1.4-1.4 2.1-2.1 1.4 1.4-2.1 2.1zM18.4 4.2l1.4 1.4-2.1 2.1-1.4-1.4 2.1-2.1z"/></svg>
+        </button>
+      </div>
 
     </div>
-    <!-- /columna derecha -->
+  </header>
 
-  </div>
-  <!-- /site-wrapper -->
+  <main class="site-main" id="app" tabindex="-1">
+    <noscript><p class="container">Este sitio necesita JavaScript para mostrar su contenido.</p></noscript>
+  </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script type="module" src="src/app.js"></script>
-  <script>
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
-  </script>
+  <footer class="site-footer">
+    <div class="footer-inner">
 
+      <div class="footer-brand">
+        <span class="footer-name">Francisco Miranda</span>
+        <span class="footer-note">Ciudad de México, México</span>
+      </div>
+
+      <ul class="footer-links" role="list">
+        <li><a href="mailto:francisco.miv4@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Correo</a></li>
+        <li><a href="/public/cv.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM12 17l-4-4h2.5v-3h3v3H16l-4 4z"/></svg>CV</a></li>
+        <li><a href="https://github.com/MVFran" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/francisco-miranda-vazquez" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a></li>
+        <li><a href="https://www.instagram.com/francisco_miv" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a></li>
+      </ul>
+
+      <p class="footer-copyright">© <span id="footer-year"></span> Francisco Miranda. Todos los derechos reservados.</p>
+
+    </div>
+  </footer>
+
+  <!-- Búsqueda (Ctrl/⌘ K  ·  /) -->
+  <dialog class="search-dialog" id="search-dialog" aria-label="Buscar en el sitio">
+    <form method="dialog" class="search-form" id="search-form">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg>
+      <input id="search-input" type="search" placeholder="Buscar proyectos, artículos, cursos…"
+             autocomplete="off" spellcheck="false" aria-label="Buscar" />
+      <kbd>Esc</kbd>
+    </form>
+    <div class="search-results" id="search-results" role="listbox" aria-live="polite"></div>
+  </dialog>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/marked@18.1.0/lib/marked.umd.js"
+          integrity="sha384-IvVdUXkhyoD0shbjhiiOnuiTbervTaB0VJcnEcg3shUAMVOOF6lKj4ozJrCwvz6s" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"
+          integrity="sha384-a7SzOxErzJ3ZpQz0zJ32d67dSitNzPcbfybc/ykU9KJhMgZkwqfSxlhhdJRS+XGL" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
+          integrity="sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk" crossorigin="anonymous"></script>
+  <script type="module" src="/src/app.js"></script>
 </body>
 </html>

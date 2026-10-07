@@ -1,252 +1,138 @@
 // ============================================================
 // src/content-loader.js
-// Carga y renderiza contenido desde archivos Markdown y JSON
-// ============================================================
-//
-// CONCEPTO: Asincronía y por qué existe
-// ---------------------------------------
-// Cuando JavaScript pide un archivo a un servidor (fetch),
-// no sabe cuánto va a tardar en llegar la respuesta: puede ser
-// 50ms o 3 segundos dependiendo de la red.
-//
-// Si JS esperara la respuesta sin hacer nada más, el navegador
-// se congelaría — no podría responder a clics, animaciones ni
-// ningún otro evento. Esto se llama "bloqueo del hilo principal".
-//
-// La solución es la asincronía: JS lanza la petición, continúa
-// ejecutando otro código, y cuando llega la respuesta retoma
-// el trabajo donde lo dejó.
-//
-// CONCEPTO: async / await
-// ------------------------
-// async/await es la forma moderna de escribir código asíncrono
-// en JS. Una función marcada con `async` siempre devuelve una
-// Promesa. Dentro de ella, `await` pausa la ejecución de ESA
-// función (no del navegador completo) hasta que la Promesa
-// se resuelva, y luego continúa con el resultado.
+// Carga el catálogo (index.json) y los documentos Markdown.
+// El catálogo lo genera scripts/build-index.mjs a partir del
+// front matter de cada archivo en content/.
 // ============================================================
 
+import { escapeHTML } from './util.js';
 
-// ------------------------------------------------------------
-// CONFIGURACIÓN
-// ------------------------------------------------------------
-const CONTENT_BASE = 'content';
-const INDEX_FILE   = `${CONTENT_BASE}/index.json`;
-
-// Cache en memoria — evita pedir el mismo archivo dos veces
-// CONCEPTO: Map
-// --------------
-// Map es una estructura clave-valor con métodos claros:
-// .get(), .set(), .has(), .delete()
-// La clave es la ruta del archivo, el valor es su contenido.
 const cache = new Map();
 
-
-// ============================================================
-// FUNCIONES PÚBLICAS (exportadas)
-// ============================================================
-
 // ------------------------------------------------------------
-// loadIndex()
-// Carga y devuelve el catálogo completo del sitio (index.json).
-// Devuelve: Promise<Object>
-// ------------------------------------------------------------
-export async function loadIndex() {
-  return fetchJSON(INDEX_FILE);
-}
-
-
-// ------------------------------------------------------------
-// loadMarkdown(filePath)
-// Carga un archivo Markdown y lo convierte a HTML.
-//
-// Parámetro: filePath — ruta relativa desde la raíz del sitio
-//   Ejemplo: 'content/about.md'
-//            'content/blog/mi-articulo.md'
-//
-// Devuelve: Promise<string> — HTML listo para inyectar en el DOM
-// ------------------------------------------------------------
-export async function loadMarkdown(filePath) {
-  if (cache.has(filePath)) {
-    return cache.get(filePath);
-  }
-
-  const text = await fetchText(filePath);
-
-  // marked.parse() convierte el texto Markdown a HTML.
-  // `marked` es la librería cargada desde CDN en index.html.
-  // Al cargarse con <script src="...">, queda disponible
-  // como variable global — por eso podemos usarla aquí
-  // sin importar nada.
-  const html = marked.parse(text);
-
-  cache.set(filePath, html);
-  return html;
-}
-
-
-// ------------------------------------------------------------
-// loadProjectList()
-// Devuelve todos los proyectos del índice, ordenados por fecha.
-// Devuelve: Promise<Array>
-// ------------------------------------------------------------
-export async function loadProjectList() {
-  const index = await loadIndex();
-
-  // CONCEPTO: optional chaining (?.)
-  // ----------------------------------
-  // index?.projects evita error si index es null.
-  // Es equivalente a: index && index.projects ? index.projects : []
-  return sortByDate(index?.projects ?? []);
-}
-
-
-// ------------------------------------------------------------
-// loadBlogList()
-// Devuelve todos los artículos del índice, ordenados por fecha.
-// Devuelve: Promise<Array>
-// ------------------------------------------------------------
-export async function loadBlogList() {
-  const index = await loadIndex();
-  return sortByDate(index?.blog ?? []);
-}
-
-
-// ------------------------------------------------------------
-// loadCourseList()
-// Devuelve todos los cursos del índice.
-// Devuelve: Promise<Array>
-// ------------------------------------------------------------
-export async function loadCourseList() {
-  const index = await loadIndex();
-  return index?.courses ?? [];
-}
-
-
-// ------------------------------------------------------------
-// loadEntry(filePath)
-// Carga una entrada individual y devuelve su HTML renderizado.
-// Alias semántico de loadMarkdown para mayor claridad.
-// Devuelve: Promise<string>
-// ------------------------------------------------------------
-export async function loadEntry(filePath) {
-  return loadMarkdown(filePath);
-}
-
-
-// ============================================================
-// FUNCIONES PRIVADAS (no exportadas)
-// Solo disponibles dentro de este módulo.
-// ============================================================
-
-// ------------------------------------------------------------
-// fetchText(url)
-// Petición HTTP que devuelve el contenido como texto plano.
-//
-// CONCEPTO: try / catch
-// ----------------------
-// Cuando algo puede fallar (red caída, archivo no encontrado),
-// envolvemos el código en try/catch. Si cualquier línea dentro
-// del try lanza un error, la ejecución salta al catch.
-// Esto evita que un error rompa toda la aplicación.
-//
-// CONCEPTO: fetch() y response.ok
-// ---------------------------------
-// fetch() NO lanza error para respuestas 404 o 500 —
-// solo falla si hay un problema de red total.
-// response.ok es true para códigos HTTP 200-299.
-// Por eso lo revisamos manualmente con un throw.
-//
-// Devuelve: Promise<string>
-// ------------------------------------------------------------
-async function fetchText(url) {
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`No se pudo cargar: ${url} (${response.status})`);
-    }
-
-    // .text() lee el cuerpo de la respuesta como string.
-    // También es asíncrono, por eso el await.
-    return await response.text();
-
-  } catch (error) {
-    console.error('[content-loader] Error al cargar archivo:', error);
-    return `# Error al cargar el contenido\n\nNo se pudo cargar \`${url}\`. Verifica que el archivo existe.`;
-  }
-}
-
-
-// ------------------------------------------------------------
-// fetchJSON(url)
-// Petición HTTP que devuelve el contenido parseado como objeto JS.
-// Devuelve: Promise<Object|null>
+// Red
 // ------------------------------------------------------------
 async function fetchJSON(url) {
-  if (cache.has(url)) {
-    return cache.get(url);
-  }
-
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`No se pudo cargar: ${url} (${response.status})`);
-    }
-
-    // .json() parsea el texto de la respuesta como objeto JS.
-    // CONCEPTO: JSON (JavaScript Object Notation)
-    // --------------------------------------------
-    // JSON es un formato de texto para representar datos
-    // estructurados. .json() convierte ese texto en un
-    // objeto JS real con el que podemos trabajar directamente.
-    const data = await response.json();
-
-    cache.set(url, data);
-    return data;
-
-  } catch (error) {
-    console.error('[content-loader] Error al cargar JSON:', error);
-    return null;
-  }
+  if (cache.has(url)) return cache.get(url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: ${response.status}`);
+  const data = await response.json();
+  cache.set(url, data);
+  return data;
 }
 
+async function fetchText(url) {
+  const response = await fetch(url);
+  const text = await response.text();
+  // Si el servidor responde con el fallback de la SPA (index.html), el archivo no existe
+  if (!response.ok || /^\s*<!doctype html/i.test(text)) throw new Error(`${url}: no encontrado`);
+  return text;
+}
 
 // ------------------------------------------------------------
-// sortByDate(items)
-// Ordena un array de entradas de más reciente a más antiguo.
-// Espera que cada item tenga una propiedad `date`: "2025-05-12"
-//
-// CONCEPTO: Array.sort() con función comparadora
-// -----------------------------------------------
-// sort() sin argumentos ordena como strings, lo que rompe
-// el orden de fechas. Con una función comparadora le decimos
-// exactamente cómo comparar dos elementos (a y b):
-//   retorno negativo → a va antes que b
-//   retorno positivo → b va antes que a
-//
-// CONCEPTO: spread operator (...)
-// --------------------------------
-// [...items] crea una copia del array para no mutar el original.
-// Mutar datos que vienen del índice podría causar efectos
-// inesperados si otras partes del código también los usan.
-//
-// Devuelve: Array (copia ordenada)
+// Catálogo
 // ------------------------------------------------------------
-function sortByDate(items) {
-  return [...items].sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
+export const loadIndex      = () => fetchJSON('/content/index.json');
+export const loadSearchDocs = () => fetchJSON('/content/search.json');
+
+export async function loadProjectList() { return (await loadIndex()).projects ?? []; }
+export async function loadBlogList()    { return (await loadIndex()).blog ?? []; }
+export async function loadCourseList()  { return (await loadIndex()).courses ?? []; }
+
+// ------------------------------------------------------------
+// Markdown → HTML seguro
+// Devuelve { html, toc }
+//   html: contenido sanitizado, con ecuaciones renderizadas
+//   toc:  [{ id, text, level }] de los h2 y h3
+// ------------------------------------------------------------
+export async function loadDocument(filePath) {
+  const key = `doc:${filePath}`;
+  if (cache.has(key)) return cache.get(key);
+
+  const raw  = await fetchText('/' + filePath.replace(/^\//, ''));
+  const body = stripFrontMatter(raw).replace(/^\s*#\s+.+\n?/, ''); // el título lo muestra la página
+  const doc  = renderMarkdown(body);
+
+  cache.set(key, doc);
+  return doc;
+}
+
+function stripFrontMatter(text) {
+  return text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+}
+
+// ------------------------------------------------------------
+// Ecuaciones: se extraen antes de pasar por marked (que rompería
+// los guiones bajos y barras), y se reinsertan ya renderizadas
+// con KaTeX después de sanitizar.
+// ------------------------------------------------------------
+const MATH_PATTERNS = [
+  { re: /\$\$([\s\S]+?)\$\$/g,        display: true  },
+  { re: /\\\[([\s\S]+?)\\\]/g,         display: true  },
+  { re: /\\\(([\s\S]+?)\\\)/g,         display: false },
+  { re: /(?<![\\$\w])\$(?!\s)((?:\\.|[^$\\\n])+?)(?<!\s)\$(?![\d$])/g, display: false },
+];
+
+function extractMath(markdown) {
+  const store = [];
+  // Se protege el código para no tocar los $ que aparezcan dentro
+  const code = [];
+  let text = markdown.replace(/```[\s\S]*?```|`[^`\n]+`/g, m => `CODEPH${code.push(m) - 1}END`);
+
+  for (const { re, display } of MATH_PATTERNS) {
+    text = text.replace(re, (_, tex) => `MATHPH${store.push({ tex, display }) - 1}END`);
+  }
+  text = text.replace(/CODEPH(\d+)END/g, (_, i) => code[i]);
+  return { text, store };
+}
+
+function renderMath({ tex, display }) {
+  if (!window.katex) return escapeHTML(tex);
+  return window.katex.renderToString(tex.trim(), { displayMode: display, throwOnError: false, output: 'html' });
+}
+
+function renderMarkdown(markdown) {
+  const { text, store } = extractMath(markdown);
+  const dirty = window.marked.parse(text, { gfm: true });
+  const clean = window.DOMPurify.sanitize(dirty, { ADD_ATTR: ['target'] });
+  const withMath = clean.replace(/MATHPH(\d+)END/g, (_, i) => renderMath(store[i]));
+
+  const tpl = document.createElement('template');
+  tpl.innerHTML = withMath;
+  const toc = enhance(tpl.content);
+
+  return { html: tpl.innerHTML, toc };
+}
+
+// Ids y enlaces de ancla en títulos, enlaces externos seguros
+function enhance(root) {
+  const toc  = [];
+  const used = new Set();
+
+  root.querySelectorAll('h2, h3').forEach(h => {
+    let id = h.textContent.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'seccion';
+    for (let n = 2; used.has(id); n++) id = `${id.replace(/-\d+$/, '')}-${n}`;
+    used.add(id);
+    h.id = id;
+    toc.push({ id, text: h.textContent, level: Number(h.tagName[1]) });
+
+    const a = document.createElement('a');
+    a.className = 'anchor';
+    a.href = `#${id}`;
+    a.setAttribute('aria-label', 'Enlace a esta sección');
+    a.textContent = '#';
+    h.append(a);
   });
-}
 
+  root.querySelectorAll('a[href]').forEach(a => {
+    const href = a.getAttribute('href');
+    if (/^https?:\/\//.test(href) && !href.startsWith(location.origin)) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+  });
 
-// ------------------------------------------------------------
-// clearCache()
-// Limpia el cache en memoria. Útil en desarrollo para forzar
-// recargas sin reiniciar el servidor.
-// ------------------------------------------------------------
-export function clearCache() {
-  cache.clear();
-  console.log('[content-loader] Cache limpiado.');
+  root.querySelectorAll('img').forEach(img => { img.loading = 'lazy'; });
+  return toc;
 }

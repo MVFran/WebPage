@@ -1,45 +1,42 @@
 {
   "projects": [
     {
-      "id": "proyecto-ejemplo",
-      "title": "Nombre del proyecto",
-      "description": "Descripción breve del proyecto. Qué problema resuelve y qué tecnologías usa.",
-      "date": "2025-05-01",
-      "tags": ["Python", "ML"],
+      "id": "sitio-web",
+      "title": "Este sitio web",
+      "description": "Sitio personal construido como SPA con HTML, CSS y JavaScript puro, sin frameworks, y desplegado en Vercel.",
+      "date": "2026-10-06",
+      "tags": [
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Vercel",
+        "SPA"
+      ],
+      "file": "content/projects/sitio-web.md",
       "type": "programming",
-      "file": "content/projects/proyecto-ejemplo.md"
+      "repo": "https://github.com/MVFran/WebPage",
+      "featured": true
     }
   ],
-
-  "blog": [
-    {
-      "id": "articulo-ejemplo",
-      "title": "Título del artículo",
-      "description": "Un párrafo corto que resume de qué va el artículo.",
-      "date": "2025-05-12",
-      "tags": ["Física"],
-      "readingTime": 5,
-      "file": "content/blog/articulo-ejemplo.md"
-    }
-  ],
-
+  "blog": [],
   "courses": [
     {
-      "id": "curso-ejemplo",
-      "title": "Nombre del curso",
-      "institution": "Nombre de la institución o plataforma",
-      "date": "2025-04-01",
-      "tags": ["Matemáticas"],
+      "id": "probabilidad",
+      "title": "Probabilidad",
+      "institution": "",
+      "description": "",
+      "date": "2026-10-06",
+      "tags": [
+        "Probabilidad",
+        "Matemáticas"
+      ],
+      "file": "",
       "notes": [
         {
-          "title": "Módulo 1 — Introducción",
+          "id": "modulo01",
+          "title": "Probabilidad Elemental",
           "type": "markdown",
-          "file": "content/courses/curso-ejemplo/modulo-1.md"
-        },
-        {
-          "title": "Módulo 2 — Desarrollo",
-          "type": "pdf",
-          "file": "content/courses/curso-ejemplo/modulo-2.pdf"
+          "file": "content/courses/probabilidad/modulo01.md"
         }
       ]
     }

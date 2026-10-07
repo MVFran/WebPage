@@ -1,0 +1,10 @@
+{
+  "name": "webpage",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build-index.mjs && node scripts/dev.mjs",
+    "build": "node scripts/build-index.mjs",
+    "new": "node scripts/new.mjs"
+  }
+}
